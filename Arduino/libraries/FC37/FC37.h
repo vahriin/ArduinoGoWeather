@@ -9,14 +9,13 @@
 
 class FC37 {
 private:
-    int _pin;
-    int _lastValue;
+    int8_t _pin;
+    int16_t _lastValue;
 
 public:
-    FC37(int port);
+    FC37(int8_t port);
     void begin(void);
-    int getRain(void);
-    bool getError(void);
+    uint16_t readRain(void);
 };
 
 #endif

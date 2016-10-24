@@ -1,6 +1,6 @@
 #include "FC37.h"
 
-FC37::FC37(int pin)
+FC37::FC37(int8_t pin)
 {
     _pin = pin;
     _lastValue = 0;
@@ -8,16 +8,11 @@ FC37::FC37(int pin)
 
 void FC37::begin(void)
 {
-    pinMode(_pin, INPUT_PULLUP);
+    pinMode(_pin, INPUT);
     _lastValue = analogRead(_pin);
 }
 
-bool FC37::getError(void)
+uint16_t FC37::readRain(void)
 {
-    return ((_lastValue - analogRead(_pin)) > 200);
-}
-
-int FC37::getRain(void)
-{
-    return analogRead(_pin);
+     return (uint16_t)analogRead(_pin);
 }
