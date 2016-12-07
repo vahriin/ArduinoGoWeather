@@ -1,9 +1,10 @@
-package main
+package weather
 
 import(
 	"strings"
 	"errors"
 	"strconv"
+	"github.com/vahriin/Aroofino/libraries/weather"
 )
 
 const (
@@ -20,105 +21,69 @@ type Weather struct {
 	rain string		//rain value stores a force of rain
 }
 
-func (weather Weather) Fahrenheit() (int) {
-	return 9*weather.temperature/5+320
+func Create(data string) (Weather, error) {
+	var weather Weather
+	err := weather.Parse(data)
+	return weather, err
 }
 
-func (weather Weather) MmHg() (float64) {
-	return float64(weather.pressure)/133.3224
-}
-
-func (weather Weather) Bar() (float64) {
-	return float64(weather.pressure)/100
-}
-
-func Parse(data string) (Weather, error) {
-	var weather Weather;
+func (weather Weather)Parse(data string) (error) {
 	var err error
 	if (data == "") {
-		return weather, errors.New("No data string")
+		return errors.New("No data string")
 	}
 	dataArray := strings.Split(data[:len(data)-1], "&")
 	if len(dataArray) != 4 {
-		return weather, errors.New("error of data parsing")
+		return errors.New("error of data parsing")
 	}
 
 	weather.temperature, err = strconv.Atoi(dataArray[0])
 	if err != nil {
-		return weather, err
+		return err
 	}
 	weather.humidity, err = strconv.Atoi(dataArray[1])
 	if err != nil {
-		return weather, err
+		return err
 	}
-	temp, err := strconv.Atoi(dataArray[2])
+	press, err := strconv.Atoi(dataArray[2])
 	if err != nil {
-		return weather, err
+		return err
 	}
-	weather.pressure = uint(temp) * 10
+	weather.pressure = uint(press) * 10
 	weather.rain, err = rainConvert(dataArray[3])
 	if err != nil {
-		return weather, err
+		return err
 	}
-	return weather, nil
+	return nil
 }
 
-func (weather Weather) GetData(temperature, humidity, pressure, rain bool, formats ...int) (string, error) {
-	//use bool vars for get the corresponding values.
-	//formats var includes format for getting values:
-	//temperature: 0 for celsius, 1 for fahrenheit
-	//pressure: 0 for pascals, 1 for mmHg, 2 for Bar
-	//default all formats is 0
-	//if boolean var is false, not set corresponding values.
-	//set formats in the order of the corresponding boolean vars
 
-	var returnData string
+func (weather Weather) TempCelsius() (float64) {
+	return float64(weather.temperature)/10.0
+}
 
-	if temperature {
-		var temp int
-		if len(formats) != 0 {
-			temp = formats[0]
-		} else {
-			temp = 0
-		}
-		switch temp {
-		case 0 :
-			returnData += strconv.FormatFloat(float64(weather.temperature)/10.0, 'f', -1, 32)
-		case 1 :
-			returnData += strconv.FormatFloat(float64(weather.Fahrenheit())/10.0, 'f', -1, 32)
-		}
-		returnData += " "
-	}
+func (weather Weather) TempFahrenheit() (float64) {
+	return 9*(float64(weather.temperature)/10.0)/5+32
+}
 
-	if humidity {
-		returnData += strconv.FormatFloat(float64(weather.humidity)/10.0, 'f', -1, 32)
-		returnData += " "
-	}
+func (weather Weather) HumPercent() (float64) {
+	return float64(weather.humidity)/10.0
+}
 
-	if pressure {
-		var temp int //index of parametrs in formats
-		if len(formats) == 1 && !temperature {
-			temp = formats[0]
-		} else if len(formats) == 2 && temperature {
-			temp = formats[1]
-		} else {
-			temp = 0
-		}
-		switch temp {
-		case 0:
-			returnData += strconv.FormatFloat(float64(weather.pressure), 'f', -1, 32)
-		case 1:
-			returnData += strconv.FormatFloat(weather.MmHg(), 'f', -1, 32)
-		case 2:
-			returnData += strconv.FormatFloat(weather.Bar(), 'f', -1, 32)
-		}
-		returnData += " "
-	}
+func (weather Weather) PresPascal() (float64) {
+	return float32(weather.pressure)
+}
 
-	if rain {
-		returnData += weather.rain
-	}
-	return returnData, nil
+func (weather Weather) PresMmHg() (float64) {
+	return float64(weather.pressure)/133.3224
+}
+
+func (weather Weather) PresBar() (float64) {
+	return float64(weather.pressure)/100
+}
+
+func (weather Weather) RainType() (string) {
+	return weather.rain
 }
 
 func rainConvert(rain string) (string, error) {
