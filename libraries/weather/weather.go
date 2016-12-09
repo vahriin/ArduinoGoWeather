@@ -4,7 +4,6 @@ import(
 	"strings"
 	"errors"
 	"strconv"
-	"github.com/vahriin/Aroofino/libraries/weather"
 )
 
 const (
