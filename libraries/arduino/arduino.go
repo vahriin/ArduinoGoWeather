@@ -1,9 +1,9 @@
 package arduino
 
 import (
-	"fmt"
 	"github.com/schleibinger/sio"
 	"bufio"
+	"log"
 )
 
 
@@ -19,14 +19,16 @@ func Open(file string) (pc PortConnect, err error) {
 		panic(err)
 	}
 	pc.reader = bufio.NewReader(pc.port)
+	log.Println("arduino: Open port ", pc.port)
 	return pc, nil
 }
 
-func (pc *PortConnect) ReadData() (string, error) {
+func (pc *PortConnect) Gets() (string, error) {
 	answer, err := pc.reader.ReadBytes('@')
 	if err != nil {
-		fmt.Print(err)
+		log.Print(err)
 	}
+	log.Println("arduino: Get message: ", answer)
 	return string(answer), err
 }
 

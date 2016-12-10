@@ -26,7 +26,7 @@ func Create(data string) (Weather, error) {
 	return weather, err
 }
 
-func (weather Weather)Parse(data string) (error) {
+func (weather *Weather)Parse(data string) (error) {
 	var err error
 	if (data == "") {
 		return errors.New("No data string")
@@ -70,7 +70,7 @@ func (weather Weather) HumPercent() (float64) {
 }
 
 func (weather Weather) PresPascal() (float64) {
-	return float32(weather.pressure)
+	return float64(weather.pressure)
 }
 
 func (weather Weather) PresMmHg() (float64) {
