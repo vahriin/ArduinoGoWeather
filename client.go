@@ -6,6 +6,7 @@ import (
 	"github.com/vahriin/Aroofino/libraries/connect"
 	"log"
 	"time"
+	"fmt"
 )
 
 func main(){
@@ -28,5 +29,5 @@ func main(){
 		time.Sleep(time.Second)
 	}
 
-	log.Println(server.Gets())
+	fmt.Println(server.Gets())
 }

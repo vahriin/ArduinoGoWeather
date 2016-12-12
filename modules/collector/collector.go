@@ -18,7 +18,7 @@ func LoopGet(weatherStr chan<- string) {
 	}
 	for {
 		weath, err := spi.Gets()
-		log.Println("collector::LoopGet: ", weath)
+		//log.Println("collector::LoopGet: ", weath)
 		if err != nil {
 			log.Println(err)
 		}
@@ -38,7 +38,7 @@ func MakeWeather(collChannel chan<- weather.Weather, weatherStr <-chan string){
 		case <-timer.C:
 			currentWeather.Parse(w)
 			collChannel <- currentWeather
-			log.Println("collector: Put message to Selector")
+			//log.Println("collector: Put message to Selector")
 			timer.Reset(time.Second*readPause)
 		case <- null:
 		}

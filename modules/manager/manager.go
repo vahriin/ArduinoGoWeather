@@ -30,14 +30,14 @@ func ConnectManager(listenPort *net.TCPListener, weatherChannel <-chan weather.W
 		}
 		log.Println("manager::ConnectManager: Set a connect")
 		cc := connect.StartConnection(connection)
-		log.Println("manager::ConnectManager: Create a connect")
+		//log.Println("manager::ConnectManager: Create a connect")
 		go ClientOperate(cc, weatherChannel) //work with client
 	}
 }
 
 func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weather.Weather) {
 	defer client.Close()
-	log.Println("manager::ClientOperate: start")
+	//log.Println("manager::ClientOperate: start")
 	for{
 		request, err := client.Gets()
 		if err != nil {
@@ -45,7 +45,7 @@ func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weathe
 			client.Close()
 			return
 		}
-		log.Println("manager::ClientOperate: Get Request: ", request)
+		//log.Println("manager::ClientOperate: Get Request: ", request)
 		response := reqresp.MakeResponse(request, <-weatherChannel)
 		err = client.Puts(response)
 		if err != nil {
@@ -53,6 +53,6 @@ func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weathe
 			client.Close()
 			return
 		}
-		log.Println("manager::ClientOperate: Put Response: ", response)
+		//log.Println("manager::ClientOperate: Put Response: ", response)
 	}
 }

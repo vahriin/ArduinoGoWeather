@@ -4,10 +4,12 @@ import (
 	"github.com/vahriin/Aroofino/modules/collector"
 	"github.com/vahriin/Aroofino/libraries/weather"
 	"github.com/vahriin/Aroofino/modules/manager"
+	"fmt"
 )
 
 func main() {
-		listener, err := manager.WaitConnect("tcp4", "12064")
+	fmt.Println("Start program")
+	listener, err := manager.WaitConnect("tcp4", "12064")
 	if err != nil {
 		panic(err)
 	}
@@ -21,7 +23,5 @@ func main() {
 	go collector.Selector(dataCollector, dataServer)
 	go manager.ConnectManager(listener, dataServer)
 
-	//var ss string
-	//fmt.Scanln(&ss)
-	for{}
+	for{} //for work of another goroute's
 }

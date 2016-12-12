@@ -6,24 +6,6 @@ import (
 	"strconv"
 )
 
-/*type ClientMessage struct { //communication between Client Operate and ...
-	text string
-}
-
-func MakeMessage(request string) (ClientMessage) {
-	var cm ClientMessage
-	cm.text = request
-	return cm
-}
-
-func (cm *ClientMessage) SetText(request string) {
-	cm.text = request
-}
-
-func (cm ClientMessage) GetText() (string) {
-	return cm.text
-}*/
-
 func MakeResponse(cm string, weatherData weather.Weather) (string) {
 	response := ""
 	request := strings.Split(strings.ToUpper(strings.Replace(cm, " ", "", -1)), ",")
@@ -74,7 +56,7 @@ func MakeResponse(cm string, weatherData weather.Weather) (string) {
 	}
 	response += ","
 
-	switch request[3] {
+	switch request[3][:1] { //for delete "\n"
 	case "0":
 		break
 	case "1":
