@@ -1,0 +1,4 @@
+BMP280M	KEYWORD1
+begin KEYWORD2
+readTemperature KEYWORD2
+readPressure KEYWORD2
