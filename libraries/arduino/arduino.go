@@ -16,7 +16,7 @@ type PortConnect struct {
 func Open(file string) (pc PortConnect, err error) {
 	pc.port, err = sio.Open(file, 0x1002) //Baud Rate 115200
 	if err != nil {
-		panic(err)
+		return pc, err
 	}
 	pc.reader = bufio.NewReader(pc.port)
 	log.Println("arduino: Open port ", pc.port)
@@ -24,6 +24,7 @@ func Open(file string) (pc PortConnect, err error) {
 }
 
 func (pc *PortConnect) Gets() (string, error) {
+	//log.Println("Gets")
 	answer, err := pc.reader.ReadBytes('@')
 	if err != nil {
 		log.Print(err)

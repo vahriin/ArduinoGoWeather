@@ -35,6 +35,7 @@ func ConnectManager(listenPort *net.TCPListener, weatherChannel <-chan weather.W
 }
 
 func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weather.Weather) {
+	defer client.Close()
 	for{
 		request, err := client.Gets()
 		if err != nil {
@@ -52,6 +53,4 @@ func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weathe
 		}
 		log.Println("manager: Put Response: ", response)
 	}
-
-
 }

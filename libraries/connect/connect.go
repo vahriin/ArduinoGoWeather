@@ -36,6 +36,7 @@ func (cc ClientConnection) Gets() (string, error) {
 
 func (cc ClientConnection) Puts(message string) (error) {
 	_, err := cc.writer.WriteString(message)
+	cc.writer.Flush()
 	cc.conn.SetDeadline(time.Now().Add(time.Minute*deadline))
 	return  err
 }
