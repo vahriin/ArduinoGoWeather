@@ -4,6 +4,7 @@ import(
 	"net"
 	"bufio"
 	"time"
+	"log"
 )
 
 const (
@@ -27,6 +28,7 @@ func StartConnection(connect *net.TCPConn) (ClientConnection) {
 
 func (cc ClientConnection) Gets() (string, error) {
 	answer, _,  err := cc.reader.ReadLine()
+	log.Println("connect::Gets: get message")
 	if err != nil {
 		return "", err
 	}
