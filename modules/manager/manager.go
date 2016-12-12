@@ -17,8 +17,8 @@ func WaitConnect(protocol, port string) (*net.TCPListener, error) { //this is Se
 	if err != nil {
 		return nil, err
 	}
-	log.Println("manager: Listen port ", port)
-	log.Println("manager: Wait for connect")
+	log.Println("manager::Waitconnect: Listen port ", port)
+	log.Println("manager::Waitconnect: Wait for connect")
 	return openedPort, nil
 }
 
@@ -28,14 +28,16 @@ func ConnectManager(listenPort *net.TCPListener, weatherChannel <-chan weather.W
 		if err != nil {
 			continue
 		}
-		log.Println("manager: Set a connect")
+		log.Println("manager::ConnectManager: Set a connect")
 		cc := connect.StartConnection(connection)
+		log.Println("manager::ConnectManager: Create a connect")
 		go ClientOperate(cc, weatherChannel) //work with client
 	}
 }
 
 func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weather.Weather) {
 	defer client.Close()
+	log.Println("manager::ClientOperate: start")
 	for{
 		request, err := client.Gets()
 		if err != nil {
@@ -43,7 +45,7 @@ func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weathe
 			client.Close()
 			return
 		}
-		log.Println("manager: Get Request: ", request)
+		log.Println("manager::ClientOperate: Get Request: ", request)
 		response := reqresp.MakeResponse(request, <-weatherChannel)
 		err = client.Puts(response)
 		if err != nil {
@@ -51,6 +53,6 @@ func ClientOperate(client connect.ClientConnection, weatherChannel <-chan weathe
 			client.Close()
 			return
 		}
-		log.Println("manager: Put Response: ", response)
+		log.Println("manager::ClientOperate: Put Response: ", response)
 	}
 }

@@ -19,13 +19,12 @@ func Open(file string) (pc PortConnect, err error) {
 		return pc, err
 	}
 	pc.reader = bufio.NewReader(pc.port)
-	log.Println("arduino: Open port ", pc.port)
+	log.Println("arduino::Open: Open port ", pc.port)
 	return pc, nil
 }
 
 func (pc *PortConnect) Gets() (string, error) {
-	//log.Println("Gets")
-	answer, err := pc.reader.ReadBytes('@')
+		answer, err := pc.reader.ReadBytes('@')
 	if err != nil {
 		log.Print(err)
 	}

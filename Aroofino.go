@@ -1,13 +1,9 @@
 package main
 
 import (
-	//"github.com/vahriin/Aroofino/libraries/arduino"
 	"github.com/vahriin/Aroofino/modules/collector"
 	"github.com/vahriin/Aroofino/libraries/weather"
 	"github.com/vahriin/Aroofino/modules/manager"
-	//"log"
-	//"fmt"
-	//"log"
 )
 
 func main() {

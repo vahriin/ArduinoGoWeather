@@ -5,6 +5,7 @@ import (
 
 	"github.com/vahriin/Aroofino/libraries/connect"
 	"log"
+	"time"
 )
 
 func main(){
@@ -17,7 +18,15 @@ func main(){
 		log.Println(err)
 	}
 	server := connect.StartConnection(conn)
-	log.Println("client: connection")
-	server.Puts("1,1,1,1")
+	for{
+		server.Puts("1,1,1,1\n")
+		answer, err := server.Gets()
+		if err != nil {
+			log.Println(err)
+		}
+		log.Println(answer)
+		time.Sleep(time.Second)
+	}
+
 	log.Println(server.Gets())
 }

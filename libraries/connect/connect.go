@@ -27,8 +27,8 @@ func StartConnection(connect *net.TCPConn) (ClientConnection) {
 }
 
 func (cc ClientConnection) Gets() (string, error) {
-	answer, _,  err := cc.reader.ReadLine()
-	log.Println("connect::Gets: get message")
+	answer, _, err := cc.reader.ReadLine()
+	log.Println("connect::Gets: get message", answer)
 	if err != nil {
 		return "", err
 	}
@@ -37,8 +37,9 @@ func (cc ClientConnection) Gets() (string, error) {
 }
 
 func (cc ClientConnection) Puts(message string) (error) {
-	_, err := cc.writer.WriteString(message)
+	num, err := cc.writer.WriteString(message+"\n")
 	cc.writer.Flush()
+	log.Println("connect::Puts: put ", num, " byte")
 	cc.conn.SetDeadline(time.Now().Add(time.Minute*deadline))
 	return  err
 }
